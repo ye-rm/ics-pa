@@ -48,8 +48,9 @@ static int cmd_c(char *args) {
 }
 
 static int cmd_si(char *args){
-  printf("call cmd_si for exec %d tims",*args);
-  cpu_exec(*args);
+  int *times =(int *) args;
+  printf("call cmd_si for exec %d times",*times);
+  cpu_exec(*times);
   return 0;
 }
 
