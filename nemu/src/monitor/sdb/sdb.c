@@ -67,7 +67,7 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  {"si [N]","Execute N instructions, default 1",cmd_si}
+  { "si","Execute si [N] instructions, default 1",cmd_si}
 
   /* TODO: Add more commands */
 
@@ -87,6 +87,7 @@ static int cmd_help(char *args) {
     }
   }
   else {
+    // find if command exits in com_table
     for (i = 0; i < NR_CMD; i ++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
         printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
