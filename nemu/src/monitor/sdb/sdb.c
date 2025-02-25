@@ -20,7 +20,6 @@
 #include "sdb.h"
 
 static int is_batch_mode = false;
-static int default_value = 1;
 void init_regex();
 void init_wp_pool();
 
@@ -125,7 +124,7 @@ void sdb_mainloop() {
     if (args >= str_end) {
       args = NULL;
       if (strcmp(cmd,"si") == 0){
-        args = (char *)&default_value;
+        args = "1";
       }
     }
 
