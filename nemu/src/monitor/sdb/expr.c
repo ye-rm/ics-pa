@@ -22,8 +22,9 @@
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
-
-  /* TODO: Add more token types */
+  TK_NUM, TK_LEFTBRACE,
+  TK_RIGHTBRACE,
+  TK_MULTI, TK_ADD,
 
 };
 
@@ -32,13 +33,15 @@ static struct rule {
   int token_type;
 } rules[] = {
 
-  /* TODO: Add more rules.
-   * Pay attention to the precedence level of different rules.
-   */
-
   {" +", TK_NOTYPE},    // spaces
-  {"\\+", '+'},         // plus
+  {"\\+", TK_ADD},         // plus
   {"==", TK_EQ},        // equal
+  {"\\-",TK_ADD},
+  {"\\*",TK_MULTI},
+  {"/",TK_MULTI},
+  {"[0-9]+",TK_NUM},
+  {"\\(",TK_LEFTBRACE},
+  {"\\)",TK_RIGHTBRACE},
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -95,7 +98,7 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
+          default: printf("%d",rules[i].token_type);
         }
 
         break;
