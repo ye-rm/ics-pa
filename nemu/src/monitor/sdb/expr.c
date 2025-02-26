@@ -187,6 +187,6 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
   Log("make token succeed");
-
+  Log("%d",token_idx);
   return eval(0, token_idx-1);
 }
