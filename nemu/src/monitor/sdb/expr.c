@@ -19,6 +19,7 @@
  * Type 'man regex' for more information about POSIX regex functions.
  */
 #include <regex.h>
+#include <stdio.h>
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
@@ -120,7 +121,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-
+  printf("make token success\n");
   /* TODO: Insert codes to evaluate the expression. */
   TODO();
 
