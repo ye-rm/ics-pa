@@ -123,6 +123,7 @@ void sdb_mainloop() {
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
       args = NULL;
+      // si without args
       if (strcmp(cmd,"si") == 0){
         args = "1";
       }
