@@ -139,6 +139,7 @@ bool check_parentheses(int p ,int q){
     return false;
 }
 
+//TODO: ()??
 int get_op(int p,int q){
   int op = p;
   int pri = TK_DIV;
@@ -172,7 +173,12 @@ uint32_t eval(int p,int q){
       case '+': return val_1+val_2;
       case '-': return val_1-val_2;
       case '*': return val_1*val_2;
-      case '/': return val_1/val_2;
+      case '/': 
+        if (val_2 == 0){
+          Log("divided by zero!");
+          return val_1;
+        }
+        return val_1/val_2;
       default:
         Log("bad op, may cause wrong result");
         return 0;
