@@ -152,6 +152,7 @@ int get_op(int p,int q){
       pri = TK_MULTI;
     }
   }
+  Log("select op %s", tokens[op].str);
   return op;
 }
 
