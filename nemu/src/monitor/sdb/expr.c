@@ -93,7 +93,7 @@ static bool make_token(char *e) {
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
-
+        
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
@@ -102,7 +102,11 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_NOTYPE:
             break;
-          default: 
+          default:
+            if(token_idx>=32||substr_len>=32){
+              Log("check max len or num of Tokens(should lower than 32)");
+              return false;
+            } 
             tokens[token_idx].type=rules[i].token_type;
             strncpy(tokens[token_idx].str, substr_start,substr_len);
             tokens[token_idx++].str[substr_len]='\0';
