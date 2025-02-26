@@ -147,7 +147,7 @@ int get_op(int p,int q){
     if(tokens[i].type == TK_ADD){
       op = i;
       pri = TK_ADD;
-    }else if(tokens[i].type==TK_MULTI&&pri>= TK_MULTI){
+    }else if(tokens[i].type==TK_MULTI&&pri != TK_ADD){
       op = i;
       pri = TK_MULTI;
     }
