@@ -27,7 +27,7 @@ enum {
   TK_NUM, TK_LEFTBRACE,
   TK_RIGHTBRACE,
   TK_MULTI, TK_ADD,
-
+  TK_DIV, TK_MIN
 };
 
 static struct rule {
@@ -38,9 +38,9 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", TK_ADD},         // plus
   {"==", TK_EQ},        // equal
-  {"\\-",TK_ADD},
+  {"\\-",TK_MIN},
   {"\\*",TK_MULTI},
-  {"/",TK_MULTI},
+  {"/",TK_DIV},
   {"[0-9]+",TK_NUM},
   {"\\(",TK_LEFTBRACE},
   {"\\)",TK_RIGHTBRACE},
@@ -94,24 +94,23 @@ static bool make_token(char *e) {
 
         position += substr_len;
         
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
-         */
-
         switch (rules[i].token_type) {
           case TK_NOTYPE:
             break;
+          case TK_NUM:
+            if (substr_len>32) {
+              Log("token longer than 32");
+              return false;
+            }
+            strncpy(tokens[token_idx].str, substr_start,substr_len);
+            tokens[token_idx].str[substr_len]='\0';
           default:
-            if(token_idx>=32||substr_len>=32){
-              Log("check max len or num of Tokens(should lower than 32)");
+            if(token_idx>=32){
+              Log("too many tokens(32+)");
               return false;
             } 
-            tokens[token_idx].type=rules[i].token_type;
-            strncpy(tokens[token_idx].str, substr_start,substr_len);
-            tokens[token_idx++].str[substr_len]='\0';
+            tokens[token_idx++].type=rules[i].token_type;
         }
-
         break;
       }
     }
@@ -131,12 +130,9 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-  printf("make token success\n");
-  for (int i=0; i<token_idx; i++) {
-    printf("%s %d\n",tokens[i].str,tokens[i].type);
-  } 
-  /* TODO: Insert codes to evaluate the expression. */
-  // TODO();
+  Log("make token succeed");
+  
+
 
   return 0;
 }
