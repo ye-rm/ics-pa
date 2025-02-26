@@ -104,7 +104,8 @@ static bool make_token(char *e) {
             break;
           default: 
             tokens[token_idx].type=rules[i].token_type;
-            strcpy(tokens[token_idx++].str, substr_start);
+            strncpy(tokens[token_idx].str, substr_start,substr_len);
+            tokens[token_idx++].str[substr_len]='\0';
         }
 
         break;
