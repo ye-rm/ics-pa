@@ -26,8 +26,8 @@ enum {
   TK_NOTYPE = 256, TK_EQ,
   TK_NUM, TK_LEFTBRACE,
   TK_RIGHTBRACE,
-  TK_MULTI, TK_ADD,
-  TK_DIV, TK_MIN
+  TK_ADD,TK_MIN=261,
+  TK_DIV, TK_MULTI=262
 };
 
 static struct rule {
@@ -97,18 +97,17 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_NOTYPE:
             break;
-          case TK_NUM:
+          default:
+            if(token_idx>=32){
+              Log("too many tokens(32+)");
+              return false;
+            }   
             if (substr_len>32) {
               Log("token longer than 32");
               return false;
             }
             strncpy(tokens[token_idx].str, substr_start,substr_len);
             tokens[token_idx].str[substr_len]='\0';
-          default:
-            if(token_idx>=32){
-              Log("too many tokens(32+)");
-              return false;
-            } 
             tokens[token_idx++].type=rules[i].token_type;
         }
         break;
@@ -124,8 +123,61 @@ static bool make_token(char *e) {
   return true;
 }
 
-uint32_t eval(){
-  return 0;
+bool check_parentheses(int p ,int q){
+  int cur = 0;
+  for (int i=p; i<=q; i++) {
+    if (tokens[i].type==TK_LEFTBRACE)
+      cur++;
+    else if (tokens[i].type==TK_RIGHTBRACE) 
+      cur--;
+    if (cur<0)
+      return false;
+  }
+  if(cur == 0 && tokens[p].type==TK_LEFTBRACE && tokens[q].type==TK_RIGHTBRACE)
+    return true;
+  else
+    return false;
+}
+
+int get_op(int p,int q){
+  int op = p;
+  int pri = TK_DIV;
+  for (int i=p; i<=q; i++) {
+    if(tokens[i].type == TK_ADD){
+      op = i;
+      pri = TK_ADD;
+    }else if(tokens[i].type==TK_MULTI&&pri>= TK_MULTI){
+      op = i;
+      pri = TK_MULTI;
+    }
+  }
+  return op;
+}
+
+uint32_t eval(int p,int q){
+  if(p > q){
+    Log("bad expression, may cause wrong result");
+    return 0;
+  }else if(p == q){
+    // single number
+    return atoi(tokens[p].str);
+  }else if (check_parentheses(p, q)==true) {
+    return eval(p+1, q-1);
+  }else {
+    int op = get_op(p, q);
+    int val_1 = eval(p, op-1);
+    int val_2 = eval(op+1, q);
+
+    switch (tokens[op].str[0]) {
+      case '+': return val_1+val_2;
+      case '-': return val_1-val_2;
+      case '*': return val_1*val_2;
+      case '/': return val_1/val_2;
+      default:
+        Log("bad op, may cause wrong result");
+        return 0;
+    }
+  }
 }
 
 
