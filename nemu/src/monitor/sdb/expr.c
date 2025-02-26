@@ -125,6 +125,12 @@ static bool make_token(char *e) {
 
 bool check_parentheses(int p ,int q){
   int cur = 0;
+  if(tokens[p].type==TK_LEFTBRACE&&tokens[q].type==TK_RIGHTBRACE){
+    p++;
+    q--;
+  }else{
+    return false;
+  }
   for (int i=p; i<=q; i++) {
     if (tokens[i].type==TK_LEFTBRACE)
       cur++;
@@ -133,7 +139,7 @@ bool check_parentheses(int p ,int q){
     if (cur<0)
       return false;
   }
-  if(cur == 0 && tokens[p].type==TK_LEFTBRACE && tokens[q].type==TK_RIGHTBRACE)
+  if(cur == 0 )
     return true;
   else
     return false;
