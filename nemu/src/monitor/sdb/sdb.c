@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <stdio.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -124,7 +125,7 @@ static int cmd_x(char* args){
 
 static int cmd_p(char* args){
   bool success;
-  expr(args, &success);
+  printf("%d\n",expr(args, &success));
   return 0;
 }
 
