@@ -20,6 +20,7 @@
  */
 #include <regex.h>
 #include <stdio.h>
+#include <string.h>
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
@@ -73,7 +74,7 @@ typedef struct token {
 
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
-
+int token_idx = 0;
 static bool make_token(char *e) {
   int position = 0;
   int i;
@@ -99,7 +100,11 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: printf("%d",rules[i].token_type);
+          case TK_NOTYPE:
+            break;
+          default: 
+            tokens[token_idx].type=rules[i].token_type;
+            strcpy(tokens[token_idx++].str, substr_start);
         }
 
         break;
@@ -122,6 +127,9 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
   printf("make token success\n");
+  for (int i=0; i<token_idx; i++) {
+    printf("%s %d\n",tokens[i].str,tokens[i].type);
+  } 
   /* TODO: Insert codes to evaluate the expression. */
   // TODO();
 
