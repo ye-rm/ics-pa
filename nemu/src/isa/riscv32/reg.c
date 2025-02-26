@@ -31,7 +31,7 @@ void isa_reg_display() {
       printf("\n");
     }
   }
-  printf("pc: 0x%x",cpu.pc);
+  printf("pc:\t0x%x",cpu.pc);
   printf("\n");
 }
 
