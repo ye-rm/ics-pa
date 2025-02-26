@@ -13,6 +13,7 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+#include "local-include/reg.h"
 #include <isa.h>
 #include <stdio.h>
 
@@ -25,7 +26,7 @@ const char *regs[] = {
 
 void isa_reg_display() {
   for(int i=0;i<31;i++){
-    printf("%s\n",regs[i]);
+    printf("%s: %x\n",regs[i],cpu.gpr[i]);
   }
 }
 
