@@ -195,16 +195,19 @@ int test_expr(const char *path){
   }
   unsigned ret;
   bool success = false;
-  int i = 1;
+  int passed = 0;
+  int failed = 0;
   while (fscanf(fp,"%u %s\n",&ret,buf)==2){
     unsigned cal = expr(buf,&success);
     if (ret != cal ){
       printf("error when expr %s, result is %u, but ans is %u",buf,ret,cal);
+      failed++;
     }else{
-      printf("Passed check no. %d",i++);
+      passed++;
     }
   }
   fclose(fp);
+  printf("passed :%d\nfailed:%d\n",passed,failed);
   return 1;
 }
 void init_sdb() {
