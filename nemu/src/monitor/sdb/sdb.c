@@ -127,7 +127,7 @@ static int cmd_x(char* args){
     printf("check args, refer to 'help x'\n");
     return 0;
   }
-  printf("%s\n %s\n",args1,args2);
+  printf("%s\n%s\n",args1,args2);
   return 0;
 }
 
