@@ -54,7 +54,6 @@ static struct rule
 };
 
 #define NR_REGEX ARRLEN(rules)
-int test_expr(const char *path);
 static regex_t re[NR_REGEX] = {};
 
 /* Rules are used for many times.
@@ -245,7 +244,6 @@ uint32_t eval(int p, int q)
 
 word_t expr(char *e, bool *success)
 {
-  test_expr("/home/ye/Projects/ics2024/nemu/tools/gen-expr/input");
   if (!make_token(e))
   {
     *success = false;
@@ -255,23 +253,4 @@ word_t expr(char *e, bool *success)
   uint32_t ret = eval(0, token_idx - 1);
   token_idx = 0;
   return ret;
-}
-
-int test_expr(const char *path){
-  FILE *fp = fopen(path,"r");
-  if (fp == NULL){
-    printf("Unable to open file %s",path);
-    return 0;
-  }
-  unsigned ret;
-  char exp[1024];
-  bool success = false;
-  while (fscanf(fp,"%u %s\n",&ret,exp)==2){
-    unsigned cal = expr(exp,&success);
-    if (success==false||ret != cal ){
-      printf("error when expr %s, result is %u, but ans is %u",exp,ret,cal);
-    }
-  }
-  fclose(fp);
-  return 1;
 }

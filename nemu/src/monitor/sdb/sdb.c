@@ -184,11 +184,31 @@ void sdb_mainloop() {
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
 }
-
+int test_expr(const char *path){
+  FILE *fp = fopen(path,"r");
+  if (fp == NULL){
+    printf("Unable to open file %s",path);
+    return 0;
+  }
+  unsigned ret;
+  char exp[1024];
+  bool success = false;
+  while (fscanf(fp,"%u %s\n",&ret,exp)==2){
+    unsigned cal = expr(exp,&success);
+    if (success==false||ret != cal ){
+      printf("error when expr %s, result is %u, but ans is %u",exp,ret,cal);
+    }
+  }
+  fclose(fp);
+  return 1;
+}
 void init_sdb() {
   /* Compile the regular expressions. */
   init_regex();
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
+
+  test_expr("/home/ye/Projects/ics2024/nemu/tools/gen-expr/input");
 }
+
