@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdio.h>
+#include <memory/vaddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -121,13 +122,23 @@ static int cmd_info(char* args){
 }
 
 static int cmd_x(char* args){
+  bool success = false;
   char *args1=strtok(args," ");
   char *args2=strtok(NULL," ");
   if (args1 == NULL||args2 == NULL){
     printf("check args, refer to 'help x'\n");
     return 0;
   }
-  printf("%s\n%s\n",args1,args2);
+  unsigned addr = expr(args2,&success);
+  if(!success){
+    printf("check you EXPR!\n");
+    return 0;
+  }
+  for (size_t i = 0; i < atoi(args1); i++)
+  {
+    printf("0x%x\n",vaddr_read(addr,4));
+  }
+  
   return 0;
 }
 
