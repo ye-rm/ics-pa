@@ -124,7 +124,7 @@ static int cmd_x(char* args){
   char *args1=strtok(args," ");
   char *args2=args+strlen(args1)+1;
   if (args1 == NULL||args2 >= args+strlen(args)){
-    cmd_help("x");
+    cmd_help(" x");
     return 0;
   }
   printf("%s\n %s\n",args1,args2);
