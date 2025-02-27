@@ -184,6 +184,9 @@ void sdb_mainloop() {
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
   }
 }
+
+
+char buf[65535];
 int test_expr(const char *path){
   FILE *fp = fopen(path,"r");
   if (fp == NULL){
@@ -191,12 +194,11 @@ int test_expr(const char *path){
     return 0;
   }
   unsigned ret;
-  char exp[1024];
   bool success = false;
-  while (fscanf(fp,"%u %s\n",&ret,exp)==2){
-    unsigned cal = expr(exp,&success);
+  while (fscanf(fp,"%u %s\n",&ret,buf)==2){
+    unsigned cal = expr(buf,&success);
     if (ret != cal ){
-      printf("error when expr %s, result is %u, but ans is %u",exp,ret,cal);
+      printf("error when expr %s, result is %u, but ans is %u",buf,ret,cal);
     }
   }
   fclose(fp);
