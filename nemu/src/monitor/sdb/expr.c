@@ -215,8 +215,8 @@ uint32_t eval(int p, int q)
   else
   {
     int op = get_op(p, q);
-    unsigned val_1 = eval(p, op - 1);
-    unsigned val_2 = eval(op + 1, q);
+    int val_1 = eval(p, op - 1);
+    int val_2 = eval(op + 1, q);
     Log("calculate %u %s %u ",val_1,tokens[op].str,val_2);
     switch (tokens[op].str[0])
     {
