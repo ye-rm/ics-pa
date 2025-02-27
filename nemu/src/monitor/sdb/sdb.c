@@ -127,7 +127,7 @@ static int cmd_x(char* args){
     // cmd_help("x");
     return 0;
   }
-  printf("%s, %s\n",args1,args2);
+  printf("%s\n %s\n",args1,args2);
   return 0;
 }
 
