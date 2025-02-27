@@ -14,7 +14,7 @@
  ***************************************************************************************/
 
 #include <isa.h>
-#define TOKEN_LIMIT 512
+#define TOKEN_LIMIT 65535
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
