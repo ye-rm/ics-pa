@@ -195,10 +195,13 @@ int test_expr(const char *path){
   }
   unsigned ret;
   bool success = false;
+  int i = 1;
   while (fscanf(fp,"%u %s\n",&ret,buf)==2){
     unsigned cal = expr(buf,&success);
     if (ret != cal ){
       printf("error when expr %s, result is %u, but ans is %u",buf,ret,cal);
+    }else{
+      printf("Passed check no. %d",i++);
     }
   }
   fclose(fp);
