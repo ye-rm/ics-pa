@@ -150,9 +150,7 @@ bool check_parentheses(int p, int q)
     q--;
   }
   else
-  {
     return false;
-  }
   for (int i = p; i <= q; i++)
   {
     if (tokens[i].type == TK_LEFTBRACE)
@@ -219,7 +217,7 @@ uint32_t eval(int p, int q)
     int op = get_op(p, q);
     unsigned val_1 = eval(p, op - 1);
     unsigned val_2 = eval(op + 1, q);
-
+    Log("calculate %u %s %u ",val_1,tokens[op].str,val_2);
     switch (tokens[op].str[0])
     {
     case '+':
