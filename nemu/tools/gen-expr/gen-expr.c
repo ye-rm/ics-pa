@@ -22,7 +22,7 @@
 #include <string.h>
 
 #define BUF_SIZE 65536
-#define MAX_DEPTH 30
+#define MAX_DEPTH 8
 
 // this should be enough
 static char buf[BUF_SIZE] = {};

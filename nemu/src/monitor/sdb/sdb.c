@@ -207,7 +207,7 @@ int test_expr(const char *path){
     }
   }
   fclose(fp);
-  printf("passed :%d\nfailed:%d\n",passed,failed);
+  printf("passed:%d\nfailed:%d\n",passed,failed);
   return 1;
 }
 void init_sdb() {
