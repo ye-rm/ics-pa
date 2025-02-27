@@ -192,7 +192,7 @@ int get_op(int p, int q)
       }
     }
   }
-  Log("select op %s at token no. %d", tokens[op].str, op + 1);
+  // Log("select op %s at token no. %d", tokens[op].str, op + 1);
   return op;
 }
 
@@ -217,7 +217,7 @@ uint32_t eval(int p, int q)
     int op = get_op(p, q);
     int val_1 = eval(p, op - 1);
     int val_2 = eval(op + 1, q);
-    Log("calculate %u %s %u ",val_1,tokens[op].str,val_2);
+    // Log("calculate %u %s %u ",val_1,tokens[op].str,val_2);
     switch (tokens[op].str[0])
     {
     case '+':
@@ -250,5 +250,6 @@ word_t expr(char *e, bool *success)
   Log("make token succeed");
   uint32_t ret = eval(0, token_idx - 1);
   token_idx = 0;
+  *success = true;
   return ret;
 }
