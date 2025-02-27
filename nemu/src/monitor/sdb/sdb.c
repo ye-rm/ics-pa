@@ -49,7 +49,7 @@ static int cmd_c(char *args) {
 
 static int cmd_si(char *args){
   int times = atoi(args);
-  printf("call cmd_si for exec %d times \n",times);
+  // printf("call cmd_si for exec %d times \n",times);
   cpu_exec(times);
   return 0;
 }
@@ -115,11 +115,19 @@ static int cmd_help(char *args) {
 }
 
 static int cmd_info(char* args){
-  isa_reg_display();
+  if (args[0]=='r')
+    isa_reg_display();
   return 0;
 }
 
 static int cmd_x(char* args){
+  char *args1=strtok(args," ");
+  char *args2=args+strlen(args1)+1;
+  if (args1 == NULL||args2 >= args+strlen(args)){
+    cmd_help("x");
+    return 0;
+  }
+  printf("%s, %s\n",args1,args2);
   return 0;
 }
 
@@ -216,7 +224,5 @@ void init_sdb() {
 
   /* Initialize the watchpoint pool. */
   init_wp_pool();
-
-  test_expr("/home/ye/Projects/ics2024/nemu/tools/gen-expr/input");
 }
 
