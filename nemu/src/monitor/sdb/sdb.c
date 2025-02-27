@@ -122,7 +122,7 @@ static int cmd_info(char* args){
 
 static int cmd_x(char* args){
   char *args1=strtok(args," ");
-  char *args2=args+strlen(args1)+1;
+  char *args2=strtok(NULL," ");
   // if (args1 == NULL||args2 >= args+strlen(args)){
     // cmd_help("x");
     // return 0;
