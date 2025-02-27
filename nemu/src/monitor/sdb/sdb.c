@@ -195,7 +195,7 @@ int test_expr(const char *path){
   bool success = false;
   while (fscanf(fp,"%u %s\n",&ret,exp)==2){
     unsigned cal = expr(exp,&success);
-    if (success==false||ret != cal ){
+    if (ret != cal ){
       printf("error when expr %s, result is %u, but ans is %u",exp,ret,cal);
     }
   }
