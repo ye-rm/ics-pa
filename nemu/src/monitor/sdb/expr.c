@@ -14,7 +14,7 @@
  ***************************************************************************************/
 
 #include <isa.h>
-
+#define TOKEN_LIMIT 512
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
@@ -54,7 +54,7 @@ static struct rule
 };
 
 #define NR_REGEX ARRLEN(rules)
-
+int test_expr(const char *path);
 static regex_t re[NR_REGEX] = {};
 
 /* Rules are used for many times.
@@ -83,7 +83,7 @@ typedef struct token
   char str[32];
 } Token;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[TOKEN_LIMIT] __attribute__((used)) = {};
 static int nr_token __attribute__((used)) = 0;
 int token_idx = 0;
 static bool make_token(char *e)
@@ -114,9 +114,9 @@ static bool make_token(char *e)
         case TK_NOTYPE:
           break;
         default:
-          if (token_idx >= 32)
+          if (token_idx >= TOKEN_LIMIT)
           {
-            Log("too many tokens(32+)");
+            Log("too many tokens(%d+)",TOKEN_LIMIT);
             return false;
           }
           if (substr_len > 32)
@@ -218,8 +218,8 @@ uint32_t eval(int p, int q)
   else
   {
     int op = get_op(p, q);
-    int val_1 = eval(p, op - 1);
-    int val_2 = eval(op + 1, q);
+    unsigned val_1 = eval(p, op - 1);
+    unsigned val_2 = eval(op + 1, q);
 
     switch (tokens[op].str[0])
     {
@@ -245,6 +245,7 @@ uint32_t eval(int p, int q)
 
 word_t expr(char *e, bool *success)
 {
+  test_expr("/home/ye/Projects/ics2024/nemu/tools/gen-expr/input");
   if (!make_token(e))
   {
     *success = false;
@@ -254,4 +255,23 @@ word_t expr(char *e, bool *success)
   uint32_t ret = eval(0, token_idx - 1);
   token_idx = 0;
   return ret;
+}
+
+int test_expr(const char *path){
+  FILE *fp = fopen(path,"r");
+  if (fp == NULL){
+    printf("Unable to open file %s",path);
+    return 0;
+  }
+  unsigned ret;
+  char exp[1024];
+  bool success = false;
+  while (fscanf(fp,"%u %s\n",&ret,exp)==2){
+    unsigned cal = expr(exp,&success);
+    if (success==false||ret != cal ){
+      printf("error when expr %s, result is %u, but ans is %u",exp,ret,cal);
+    }
+  }
+  fclose(fp);
+  return 1;
 }
