@@ -27,18 +27,18 @@
 enum
 {
   TK_NOTYPE = 256,
-  TK_EQ,
-  TK_NEQ,
-  TK_AND,
   TK_NUM,
   TK_HEX,
   TK_REG,
   TK_LEFTBRACE,
   TK_RIGHTBRACE,
+  TK_AND,
+  TK_EQ,
+  TK_NEQ = 263 ,
   TK_ADD,
-  TK_MIN = 261,
+  TK_MIN = 264,
   TK_DIV,
-  TK_MULTI = 262
+  TK_MULTI = 265
 };
 
 static struct rule
@@ -186,18 +186,10 @@ int get_op(int p, int q)
       in_brace++;
     else if (tokens[i].type == TK_RIGHTBRACE)
       in_brace--;
-    if (in_brace == 0)
+    if (in_brace == 0&&tokens[i].type<=pri)
     {
-      if (tokens[i].type == TK_ADD)
-      {
         op = i;
-        pri = TK_ADD;
-      }
-      else if (tokens[i].type == TK_MULTI && pri != TK_ADD)
-      {
-        op = i;
-        pri = TK_MULTI;
-      }
+        pri = tokens[i].type;
     }
   }
   // Log("select op %s at token no. %d", tokens[op].str, op + 1);
