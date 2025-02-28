@@ -51,7 +51,7 @@ static struct rule
     {"\\+", TK_ADD},   // plus
     {"==", TK_EQ},     // equal
     {"!=", TK_NEQ},
-    {"0x[0-9a-fA-F]", TK_HEX},
+    {"0x[0-9a-fA-F]+", TK_HEX},
     {"\\$[a-zA-Z0-9]{2}", TK_REG},
     {"&&", TK_AND},
     {"\\-", TK_MIN},
