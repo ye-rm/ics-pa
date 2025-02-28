@@ -79,5 +79,6 @@ void show_watchpoint(){
   {
     printf("bp no. %d at \n",cur->NO);
   }
-  
+  if(head==NULL)
+    printf("No watch point set\n"); 
 }
