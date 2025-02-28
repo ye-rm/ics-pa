@@ -224,7 +224,7 @@ uint32_t eval(int p, int q)
 {
   if (p > q)
   {
-    Log("bad expression, may cause wrong result");
+    // Log("bad expression, may cause wrong result");
     return 0;
   }
   else if (p == q)
