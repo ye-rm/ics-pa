@@ -176,7 +176,7 @@ bool check_parentheses(int p, int q)
 }
 
 bool is_op(int idx){
-  switch (idx)
+  switch (tokens[idx].type)
   {
   case TK_ADD:
   case TK_MULTI:
