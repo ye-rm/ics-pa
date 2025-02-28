@@ -144,7 +144,7 @@ static int cmd_x(char* args){
 
 static int cmd_p(char* args){
   bool success;
-  printf("%u\n",expr(args, &success));
+  printf("0x%x\n",expr(args, &success));
   return 0;
 }
 
