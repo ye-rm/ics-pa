@@ -204,10 +204,11 @@ int get_op(int p, int q)
   return op;
 }
 
-bool is_single_op(int op_idx){
-  if(op_idx==0)
+bool is_single_op(int op_idx)
+{
+  if (op_idx == 0)
     return true;
-  int pre_type = tokens[op_idx-1].type;
+  int pre_type = tokens[op_idx - 1].type;
   switch (pre_type)
   {
   case TK_RIGHTBRACE:
@@ -229,8 +230,20 @@ uint32_t eval(int p, int q)
   }
   else if (p == q)
   {
-    // single number
-    return atoi(tokens[p].str);
+    bool success = false;
+    switch (tokens[p].type)
+    {
+    case TK_NUM:
+      return atoi(tokens[p].str);
+    default:
+      unsigned reg = isa_reg_str2val(tokens[p].str+1,&success);
+      if(success)
+        return reg;
+      else{
+        Log("unable to find register %s",tokens[p].str);
+        return 0;
+      }
+    }
   }
   else if (check_parentheses(p, q) == true)
   {
@@ -242,7 +255,8 @@ uint32_t eval(int p, int q)
     int val_1 = eval(p, op - 1);
     int val_2 = eval(op + 1, q);
     // Log("calculate %u %s %u ",val_1,tokens[op].str,val_2);
-    if (is_single_op(op)){
+    if (is_single_op(op))
+    {
       switch (tokens[op].str[0])
       {
       case '+':
@@ -250,9 +264,9 @@ uint32_t eval(int p, int q)
       case '-':
         return -val_2;
       case '*':
-        return vaddr_read(val_2,4);
+        return vaddr_read(val_2, 4);
       default:
-        Log("bad single op :%s",tokens[op].str);
+        Log("bad single op :%s", tokens[op].str);
         return 0;
       }
     }
