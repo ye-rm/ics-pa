@@ -238,6 +238,8 @@ uint32_t eval(int p, int q)
     bool success = false;
     switch (tokens[p].type)
     {
+    case TK_HEX:
+      return strtol(tokens[p].str,NULL,16);
     case TK_NUM:
       return atoi(tokens[p].str);
     default:
