@@ -16,11 +16,11 @@
 #include "sdb.h"
 
 #define NR_WP 32
-
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
 
+  uint32_t addr;
   /* TODO: Add more members if necessary */
 
 } WP;
@@ -39,5 +39,35 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
-/* TODO: Implement the functionality of watchpoint */
+WP* new_wp(){
+  if(free_!=NULL){
+    WP* new = free_;
+    free_=free_->next;
+    new->next = head;
+    head =new;
+  }
+  Assert(0,"break points num exceeded %d",NR_WP);
+  return NULL;
+}
 
+void free_wp(WP *wp){
+  // tmp_head for delete node
+  WP tmp_head;
+  tmp_head.next=head;
+  WP* cur = &tmp_head;
+  bool exist = false;
+  while (cur->next!=NULL){
+    if(cur->next==wp){
+      exist = true;
+      break;
+    }
+    cur=cur->next;
+  }
+  // move wp from head to free
+  if (exist){
+   WP* to_free = cur -> next;
+   cur->next = to_free->next;
+   to_free->next=free_;
+   free_=to_free; 
+  }
+}
