@@ -175,6 +175,19 @@ bool check_parentheses(int p, int q)
     return false;
 }
 
+bool is_op(int idx){
+  switch (idx)
+  {
+  case TK_ADD:
+  case TK_MULTI:
+  case TK_EQ:
+  case TK_AND: 
+    return true;
+  default:
+    return false;
+  }
+}
+
 int get_op(int p, int q)
 {
   int op = p;
@@ -186,7 +199,7 @@ int get_op(int p, int q)
       in_brace++;
     else if (tokens[i].type == TK_RIGHTBRACE)
       in_brace--;
-    if (in_brace == 0&&tokens[i].type<=pri)
+    if (in_brace == 0&&is_op(i)&&tokens[i].type<=pri)
     {
         op = i;
         pri = tokens[i].type;
