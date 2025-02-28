@@ -71,3 +71,13 @@ void free_wp(WP *wp){
    free_=to_free; 
   }
 }
+
+//todo: add more info
+void show_watchpoint(){
+  WP* cur = head;
+  while (cur!=NULL)
+  {
+    printf("bp no. %d at \n",cur->NO);
+  }
+  
+}

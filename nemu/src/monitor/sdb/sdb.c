@@ -22,6 +22,7 @@
 #include "sdb.h"
 
 static int is_batch_mode = false;
+extern void show_watchpoint();
 void init_regex();
 void init_wp_pool();
 
@@ -118,6 +119,11 @@ static int cmd_help(char *args) {
 static int cmd_info(char* args){
   if (args[0]=='r')
     isa_reg_display();
+  else if (args[0]=='w')
+  {
+    show_watchpoint();
+  }
+  
   return 0;
 }
 
