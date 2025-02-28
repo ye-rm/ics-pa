@@ -246,7 +246,7 @@ uint32_t eval(int p, int q)
     int op = get_op(p, q);
     int val_1 = eval(p, op - 1);
     int val_2 = eval(op + 1, q);
-    // Log("calculate %u %s %u ",val_1,tokens[op].str,val_2);
+    Log("calculate %u %s %u ",val_1,tokens[op].str,val_2);
     if (is_single_op(op))
     {
       switch (tokens[op].str[0])
