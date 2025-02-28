@@ -14,6 +14,7 @@
  ***************************************************************************************/
 
 #include <isa.h>
+#include <memory/vaddr.h>
 #define TOKEN_LIMIT 65535
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
@@ -27,7 +28,11 @@ enum
 {
   TK_NOTYPE = 256,
   TK_EQ,
+  TK_NEQ,
+  TK_AND,
   TK_NUM,
+  TK_HEX,
+  TK_REG,
   TK_LEFTBRACE,
   TK_RIGHTBRACE,
   TK_ADD,
@@ -45,6 +50,10 @@ static struct rule
     {" +", TK_NOTYPE}, // spaces
     {"\\+", TK_ADD},   // plus
     {"==", TK_EQ},     // equal
+    {"!=", TK_NEQ},
+    {"0x[0-9a-fA-F]", TK_HEX},
+    {"\\$[a-zA-Z0-9]{2}", TK_REG},
+    {"&&", TK_AND},
     {"\\-", TK_MIN},
     {"\\*", TK_MULTI},
     {"/", TK_DIV},
@@ -115,7 +124,7 @@ static bool make_token(char *e)
         default:
           if (token_idx >= TOKEN_LIMIT)
           {
-            Log("too many tokens(%d+)",TOKEN_LIMIT);
+            Log("too many tokens(%d+)", TOKEN_LIMIT);
             return false;
           }
           if (substr_len > 32)
@@ -166,7 +175,6 @@ bool check_parentheses(int p, int q)
     return false;
 }
 
-// TODO: ()??
 int get_op(int p, int q)
 {
   int op = p;
@@ -196,6 +204,22 @@ int get_op(int p, int q)
   return op;
 }
 
+bool is_single_op(int op_idx){
+  if(op_idx==0)
+    return true;
+  int pre_type = tokens[op_idx-1].type;
+  switch (pre_type)
+  {
+  case TK_RIGHTBRACE:
+  case TK_NUM:
+  case TK_HEX:
+  case TK_REG:
+    return false;
+  default:
+    return true;
+  }
+}
+
 uint32_t eval(int p, int q)
 {
   if (p > q)
@@ -218,6 +242,20 @@ uint32_t eval(int p, int q)
     int val_1 = eval(p, op - 1);
     int val_2 = eval(op + 1, q);
     // Log("calculate %u %s %u ",val_1,tokens[op].str,val_2);
+    if (is_single_op(op)){
+      switch (tokens[op].str[0])
+      {
+      case '+':
+        return val_2;
+      case '-':
+        return -val_2;
+      case '*':
+        return vaddr_read(val_2,4);
+      default:
+        Log("bad single op :%s",tokens[op].str);
+        return 0;
+      }
+    }
     switch (tokens[op].str[0])
     {
     case '+':
@@ -229,10 +267,16 @@ uint32_t eval(int p, int q)
     case '/':
       if (val_2 == 0)
       {
-        Log("divided by zero!");
+        Log("divided by zero! invalid result");
         return val_1;
       }
       return val_1 / val_2;
+    case '=':
+      return val_1 == val_2;
+    case '!':
+      return val_1 != val_2;
+    case '&':
+      return val_1 && val_2;
     default:
       Log("bad op, may cause wrong result");
       return 0;
