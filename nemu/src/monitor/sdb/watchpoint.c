@@ -73,13 +73,13 @@ void free_wp(WP *wp){
   }
   // move wp from head to free
   if (exist){
-   WP* to_free = cur -> next;
-   if(to_free == head){
-    head= head ->next;
-   }
-   cur->next = to_free->next;
-   to_free->next=free_;
-   free_=to_free; 
+    WP* to_free = cur -> next;
+    if( head == to_free){
+      head = head -> next;
+    }
+    cur -> next = to_free ->next;
+    to_free -> next = free_;
+    free_ = to_free;
   }
 }
 
@@ -100,7 +100,7 @@ void show_watchpoint(){
   printf("No:\tAddr:\t,Ori:\b\t");
   while (cur!=NULL)
   {
-    printf("%d\t%x\t%x\t",cur->NO,cur->addr,cur->initial_val);
+    printf("%d\t%x\t%x\t\n",cur->NO,cur->addr,cur->initial_val);
     cur = cur -> next;
   }
   if(head==NULL)
