@@ -110,6 +110,7 @@ bool check_wp_triggered(){
   {
     if(tmp->initial_val!=vaddr_read(tmp->addr,4)){
       tmp -> triggered = true;
+      printf("triggered %d watch point at %x\n",tmp->NO,tmp->addr);
       return true;
     }
   }
