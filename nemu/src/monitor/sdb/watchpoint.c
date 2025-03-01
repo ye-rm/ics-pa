@@ -97,10 +97,10 @@ WP* find_by_no(int no){
 //todo: add more info
 void show_watchpoint(){
   WP* cur = head;
-  printf("No:\tAddr:\tOri:\t\n");
+  printf("No:\tAddr:\tOri:\n");
   while (cur!=NULL)
   {
-    printf("%d\t%x\t0x%x\t\n",cur->NO,cur->addr,cur->initial_val);
+    printf("%d\t0x%x\t0x%x\n",cur->NO,cur->addr,cur->initial_val);
     cur = cur -> next;
   }
   if(head==NULL)
