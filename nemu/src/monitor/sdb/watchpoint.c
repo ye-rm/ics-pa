@@ -74,6 +74,9 @@ void free_wp(WP *wp){
   // move wp from head to free
   if (exist){
    WP* to_free = cur -> next;
+   if(to_free == head){
+    head= head ->next;
+   }
    cur->next = to_free->next;
    to_free->next=free_;
    free_=to_free; 
