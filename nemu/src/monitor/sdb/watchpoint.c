@@ -21,6 +21,7 @@ typedef struct watchpoint {
   struct watchpoint *next;
   uint32_t addr;
   uint32_t initial_val;
+  bool triggered;
 
 } WP;
 
@@ -32,6 +33,7 @@ void init_wp_pool() {
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
     wp_pool[i].next = (i == NR_WP - 1 ? NULL : &wp_pool[i + 1]);
+    wp_pool[i].triggered = false;
   }
 
   head = NULL;
@@ -46,6 +48,7 @@ WP* new_wp(uint32_t addr){
     head =new;
     head->addr = addr;
     head->initial_val = vaddr_read(addr,4);
+    head->triggered = false;
   }
   Assert(0,"break points num exceeded %d",NR_WP);
   return NULL;
@@ -78,7 +81,7 @@ void show_watchpoint(){
   WP* cur = head;
   while (cur!=NULL)
   {
-    printf("bp no. %d at \n",cur->NO);
+    printf("bp no.\t%d at 0x%x\n",cur->NO,cur->addr);
   }
   if(head==NULL)
     printf("No watch point set\n"); 
@@ -89,6 +92,7 @@ bool check_wp_triggered(){
   for (; tmp!=NULL; tmp = tmp ->next)
   {
     if(tmp->initial_val!=vaddr_read(tmp->addr,16)){
+      tmp -> triggered = true;
       return true;
     }
   }

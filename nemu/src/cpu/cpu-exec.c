@@ -39,7 +39,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 #ifdef CONFIG_WATCHPOINT
-  check_wp_triggered();
+  if (check_wp_triggered()){
+    nemu_state.state=NEMU_STOP;
+  }
   
 #endif 
 }
