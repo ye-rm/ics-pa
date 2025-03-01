@@ -50,6 +50,7 @@ WP* new_wp(uint32_t addr){
     head->addr = addr;
     head->initial_val = vaddr_read(addr,4);
     head->triggered = false;
+    return free_;
   }
   Assert(0,"break points num exceeded %d",NR_WP);
   return NULL;
