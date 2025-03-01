@@ -97,10 +97,10 @@ WP* find_by_no(int no){
 //todo: add more info
 void show_watchpoint(){
   WP* cur = head;
-  printf("watch point:\n");
+  printf("No:\tAddr:\t,Ori:\b\t");
   while (cur!=NULL)
   {
-    printf("no.\t%d at 0x%x\n",cur->NO,cur->addr);
+    printf("%d\t%x\t%x\t",cur->NO,cur->addr,cur->initial_val);
     cur = cur -> next;
   }
   if(head==NULL)
@@ -113,7 +113,7 @@ bool check_wp_triggered(){
   {
     if(tmp->initial_val!=vaddr_read(tmp->addr,4)){
       tmp -> triggered = true;
-      printf("triggered %d watch point at %x\n",tmp->NO,tmp->addr);
+      printf("triggered %d watch point at %x for val changed to%x\n",tmp->NO,tmp->addr,vaddr_read(tmp->addr,4));
       free_wp(tmp);
       return true;
     }
