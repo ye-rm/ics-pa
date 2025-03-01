@@ -148,7 +148,7 @@ static int cmd_x(char* args){
   }
   for (size_t i = 0; i < atoi(args1); i++)
   {
-    printf("0x%x\n",vaddr_read(addr+i*4,4));
+    printf("0x%4x\n",vaddr_read(addr+i*4,4));
   }
   
   return 0;
