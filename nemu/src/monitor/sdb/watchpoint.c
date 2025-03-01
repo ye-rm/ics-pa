@@ -14,14 +14,13 @@
 ***************************************************************************************/
 
 #include "sdb.h"
-
+#include "memory/vaddr.h"
 #define NR_WP 32
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-
   uint32_t addr;
-  /* TODO: Add more members if necessary */
+  uint32_t initial_val;
 
 } WP;
 
@@ -39,12 +38,14 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
-WP* new_wp(){
+WP* new_wp(uint32_t addr){
   if(free_!=NULL){
     WP* new = free_;
     free_=free_->next;
     new->next = head;
     head =new;
+    head->addr = addr;
+    head->initial_val = vaddr_read(addr,4);
   }
   Assert(0,"break points num exceeded %d",NR_WP);
   return NULL;
@@ -81,4 +82,15 @@ void show_watchpoint(){
   }
   if(head==NULL)
     printf("No watch point set\n"); 
+}
+
+bool check_wp_triggered(){
+  WP *tmp = head;
+  for (; tmp!=NULL; tmp = tmp ->next)
+  {
+    if(tmp->initial_val!=vaddr_read(tmp->addr,16)){
+      return true;
+    }
+  }
+  return false;
 }
