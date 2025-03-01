@@ -98,6 +98,7 @@ static bool make_token(char *e)
 {
   int position = 0;
   int i;
+  token_idx = 0;
   regmatch_t pmatch;
 
   nr_token = 0;
@@ -314,7 +315,6 @@ word_t expr(char *e, bool *success)
   }
   Log("make token succeed");
   uint32_t ret = eval(0, token_idx - 1);
-  token_idx = 0;
   *success = true;
   return ret;
 }
