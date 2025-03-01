@@ -40,6 +40,7 @@ void init_wp_pool() {
   free_ = wp_pool;
 }
 
+
 WP* new_wp(uint32_t addr){
   if(free_!=NULL){
     WP* new = free_;
@@ -56,6 +57,8 @@ WP* new_wp(uint32_t addr){
 
 void free_wp(WP *wp){
   // tmp_head for delete node
+  if(wp == NULL)
+    return;
   WP tmp_head;
   tmp_head.next=head;
   WP* cur = &tmp_head;
@@ -74,6 +77,17 @@ void free_wp(WP *wp){
    to_free->next=free_;
    free_=to_free; 
   }
+}
+
+WP* find_by_no(int no){
+  WP* tmp = head;
+  for (;tmp!=NULL;tmp = tmp ->next)
+  {
+    if(tmp->NO==no){
+      return tmp;
+    }
+  }
+  return NULL;
 }
 
 //todo: add more info

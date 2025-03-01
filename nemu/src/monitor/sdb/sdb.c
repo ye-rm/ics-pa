@@ -22,9 +22,15 @@
 #include "sdb.h"
 
 static int is_batch_mode = false;
-extern void show_watchpoint();
 void init_regex();
 void init_wp_pool();
+typedef struct watchpoint WP;
+
+extern WP* new_wp(uint32_t addr);
+extern void free_wp(WP *wp);
+extern WP* find_by_no(int no);
+extern void show_watchpoint();
+
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
@@ -155,10 +161,15 @@ static int cmd_p(char* args){
 }
 
 static int cmd_w(char* args){
+  bool success =false;
+  new_wp(expr(args,&success));
+  if(!success)
+    printf("unable to resolve addr %s",args);
   return 0;
 }
 
 static int cmd_d(char* args){
+  free_wp(find_by_no(atoi(args)));
   return 0;
 }
 
