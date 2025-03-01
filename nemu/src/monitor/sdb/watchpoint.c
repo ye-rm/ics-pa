@@ -97,6 +97,7 @@ void show_watchpoint(){
   while (cur!=NULL)
   {
     printf("bp no.\t%d at 0x%x\n",cur->NO,cur->addr);
+    cur = cur -> next;
   }
   if(head==NULL)
     printf("No watch point set\n"); 
