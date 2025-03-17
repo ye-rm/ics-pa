@@ -3,7 +3,7 @@
 # Add necessary options if the target is a shared library
 ifeq ($(SHARE),1)
 SO = -so
-CFLAGS  += -fPIC -fvisibility=hidden -g
+CFLAGS  += -fPIC -fvisibility=hidden
 LDFLAGS += -shared -fPIC
 endif
 
