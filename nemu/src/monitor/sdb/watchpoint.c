@@ -113,7 +113,7 @@ bool check_wp_triggered(){
   {
     if(tmp->initial_val!=vaddr_read(tmp->addr,4)){
       tmp -> triggered = true;
-      printf("triggered %d watch point at %x for val changed to%x\n",tmp->NO,tmp->addr,vaddr_read(tmp->addr,4));
+      printf("triggered %d watch point at 0x%08x for val changed to 0x%08x\n",tmp->NO,tmp->addr,vaddr_read(tmp->addr,4));
       free_wp(tmp);
       return true;
     }
