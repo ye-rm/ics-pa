@@ -79,6 +79,8 @@ static int cmd_w(char* args);
 
 static int cmd_d(char* args);
 
+static int cmd_t(char* args);
+
 static struct {
   const char *name;
   const char *description;
@@ -92,8 +94,8 @@ static struct {
   {"x","x N EXPR, scan N*32bit, start from EXPR",cmd_x},
   {"p","p EXPR, calculate EXPR",cmd_p},
   {"w","w EXPR, add watch point at EXPR",cmd_w},
-  {"d","d N, delete watch point N",cmd_d}
-
+  {"d","d N, delete watch point N",cmd_d},
+  {"t","Run project test",cmd_t}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
@@ -246,6 +248,12 @@ int test_expr(const char *path){
   fclose(fp);
   printf("passed:%d\nfailed:%d\n",passed,failed);
   return 1;
+}
+
+
+static int cmd_t(char* args){
+  test_expr("/home/ye/Projects/ics2024/nemu/tools/gen-expr/input");
+  return 0;
 }
 void init_sdb() {
   /* Compile the regular expressions. */
