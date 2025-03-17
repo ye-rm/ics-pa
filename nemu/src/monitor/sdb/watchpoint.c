@@ -100,7 +100,7 @@ void show_watchpoint(){
   printf("No:\tAddr:\t\tOri:\n");
   while (cur!=NULL)
   {
-    printf("%d\t0x08%x\t0x08%x\n",cur->NO,cur->addr,cur->initial_val);
+    printf("%d\t0x%08x\t0x%08x\n",cur->NO,cur->addr,cur->initial_val);
     cur = cur -> next;
   }
   if(head==NULL)
